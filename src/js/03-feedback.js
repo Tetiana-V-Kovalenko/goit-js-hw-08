@@ -1,19 +1,27 @@
+import throttle from 'lodash.throttle';
+
 const formEl = document.querySelector('.feedback-form');
 const emailInput = document.querySelector('[name="email"]');
 const textareaInput = document.querySelector('[name="message"]');
 
 const STORAGE_KEY = 'feedback-form-state';
-const STORAGE_VALUE = {};
 
+let STORAGE_VALUE = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+// if (localStorage.getItem(STORAGE_KEY)) {
+//   STORAGE_VALUE = JSON.parse(localStorage.getItem(STORAGE_KEY));
+// }
 populateInput();
 
 formEl.addEventListener('submit', onFormSubmit);
-emailInput.addEventListener('input', onEmailInput);
-textareaInput.addEventListener('input', onTextareaInput);
+emailInput.addEventListener('input', throttle(onEmailInput, 500));
+textareaInput.addEventListener('input', throttle(onTextareaInput, 500));
 
 function onFormSubmit(evt) {
   evt.preventDefault();
+  console.log(STORAGE_VALUE);
   evt.currentTarget.reset();
+
   localStorage.removeItem(STORAGE_KEY);
 }
 function onEmailInput() {
@@ -33,7 +41,7 @@ function populateInput() {
   if (savedInput) {
     const parseInput = JSON.parse(savedInput);
 
-    emailInput.value = parseInput.email;
-    textareaInput.value = parseInput.message;
+    emailInput.value = parseInput.email || '';
+    textareaInput.value = parseInput.message || '';
   }
 }
