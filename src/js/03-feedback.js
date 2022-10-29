@@ -8,9 +8,7 @@ const STORAGE_KEY = 'feedback-form-state';
 
 let STORAGE_VALUE = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-// if (localStorage.getItem(STORAGE_KEY)) {
-//   STORAGE_VALUE = JSON.parse(localStorage.getItem(STORAGE_KEY));
-// }
+
 populateInput();
 
 formEl.addEventListener('submit', onFormSubmit);
