@@ -1,9 +1,10 @@
 import Player from '@vimeo/player';
 
 const player = new Player('vimeo-player', {});
+const saveCurrentTime = localStorage.getItem('videoplayer-current-time');
 
-if (localStorage.getItem('videoplayer-current-time')) {
-  player.setCurrentTime(+localStorage.getItem('videoplayer-current-time'));
+if (saveCurrentTime) {
+  player.setCurrentTime(Number(saveCurrentTime));
 }
 
 player.on('timeupdate', ({ seconds }) => {

@@ -5,32 +5,27 @@ const emailInput = document.querySelector('[name="email"]');
 const textareaInput = document.querySelector('[name="message"]');
 
 const STORAGE_KEY = 'feedback-form-state';
-
-let STORAGE_VALUE = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-
+const saveInput = {};
 
 populateInput();
 
 formEl.addEventListener('submit', onFormSubmit);
-emailInput.addEventListener('input', throttle(onEmailInput, 500));
-textareaInput.addEventListener('input', throttle(onTextareaInput, 500));
+formEl.addEventListener(
+  'input',
+  throttle(evt => {
+    saveInput[evt.target.name] = evt.target.value;
+    console.log(saveInput);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(saveInput));
+  }, 500)
+);
 
 function onFormSubmit(evt) {
   evt.preventDefault();
-  console.log(STORAGE_VALUE);
+
   evt.currentTarget.reset();
+  console.log(evt.currentTarget);
 
   localStorage.removeItem(STORAGE_KEY);
-}
-function onEmailInput() {
-  const savedEmail = emailInput.value;
-  STORAGE_VALUE.email = savedEmail;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(STORAGE_VALUE));
-}
-function onTextareaInput() {
-  const savedMessage = textareaInput.value;
-  STORAGE_VALUE.message = savedMessage;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(STORAGE_VALUE));
 }
 
 function populateInput() {
